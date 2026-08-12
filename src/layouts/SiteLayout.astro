@@ -1,0 +1,60 @@
+---
+import { withBasePath } from '../config/github-pages.mjs';
+import { profile } from '../data/profile';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  bodyClass?: string;
+}
+
+const {
+  title,
+  description = `${profile.name}的个人网站、项目作品与技术文章`,
+  bodyClass = '',
+} = Astro.props;
+
+const pageTitle = title ? `${title} · ${profile.name}` : `${profile.name} · 个人网站`;
+const homeUrl = withBasePath(import.meta.env.BASE_URL);
+const articlesUrl = withBasePath(import.meta.env.BASE_URL, 'articles/');
+const projectsUrl = `${homeUrl}#projects`;
+const contactUrl = `${homeUrl}#contact`;
+const faviconSvgUrl = withBasePath(import.meta.env.BASE_URL, 'favicon.svg');
+const faviconIcoUrl = withBasePath(import.meta.env.BASE_URL, 'favicon.ico');
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin);
+const year = new Date().getFullYear();
+---
+
+<!doctype html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="generator" content={Astro.generator} />
+		<meta name="description" content={description} />
+		<meta name="theme-color" content="#07111f" />
+		<link rel="canonical" href={canonicalUrl} />
+		<link rel="icon" type="image/svg+xml" href={faviconSvgUrl} />
+		<link rel="icon" href={faviconIcoUrl} />
+		<title>{pageTitle}</title>
+	</head>
+	<body class={bodyClass}>
+		<a class="skip-link" href="#main-content">跳到正文</a>
+		<header class="site-header">
+			<nav class="shell nav" aria-label="主导航">
+				<a class="brand" href={homeUrl}>{profile.name}</a>
+				<div class="nav-links">
+					<a href={homeUrl}>首页</a>
+					<a href={articlesUrl}>文章</a>
+					<a href={projectsUrl}>项目</a>
+					<a href={contactUrl}>联系</a>
+				</div>
+			</nav>
+		</header>
+
+		<slot />
+
+		<footer class="shell site-footer">© {year} {profile.name} · Built with Astro</footer>
+	</body>
+</html>

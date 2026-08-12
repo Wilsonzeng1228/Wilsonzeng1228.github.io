@@ -1,0 +1,47 @@
+---
+import { getCollection } from 'astro:content';
+import { withBasePath } from '../../config/github-pages.mjs';
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import { formatArticleDate, getPublishedArticles } from '../../utils/articles.mjs';
+
+const articles = getPublishedArticles(await getCollection('blog'));
+---
+
+<SiteLayout title="文章" description="记录嵌入式、机器人、课程学习与项目实践。">
+	<main id="main-content" class="shell article-list-shell">
+		<header class="page-hero">
+			<p class="eyebrow">Engineering notes</p>
+			<h1>文章与实践记录</h1>
+			<p>记录问题如何出现、怎样定位，以及最后真正有效的解决方法。</p>
+		</header>
+
+		{articles.length > 0 ? (
+			<ol class="article-feed">
+				{articles.map((article) => (
+					<li>
+						<a
+							class="article-entry"
+							href={withBasePath(import.meta.env.BASE_URL, `articles/${article.id}/`)}
+						>
+							<time datetime={article.data.pubDate.toISOString()}>
+								{formatArticleDate(article.data.pubDate)}
+							</time>
+							<div class="article-summary">
+								<h2>{article.data.title}</h2>
+								<p>{article.data.description}</p>
+								{article.data.tags.length > 0 && (
+									<ul class="tag-list" aria-label={`${article.data.title}的标签`}>
+										{article.data.tags.map((tag) => <li class="tag">{tag}</li>)}
+									</ul>
+								)}
+							</div>
+							<span class="article-arrow" aria-hidden="true">↗</span>
+						</a>
+					</li>
+				))}
+			</ol>
+		) : (
+			<p class="empty-state">还没有公开文章。将 Markdown 文件的 draft 改为 false 后，它会显示在这里。</p>
+		)}
+	</main>
+</SiteLayout>
