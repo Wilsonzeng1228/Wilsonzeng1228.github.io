@@ -1,43 +1,37 @@
-# Astro Starter Kit: Minimal
+# 个人网站
 
-```sh
-npm create astro@latest -- --template minimal
-```
+基于 Astro 构建，并通过 GitHub Actions 自动部署到 GitHub Pages。
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## 从这里开始编辑
 
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
+个人资料、技能和项目集中在：
 
 ```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+src/data/profile.ts
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+首页结构在 `src/pages/index.astro`，全局样式在 `src/styles/global.css`。
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+## 本地预览
 
-Any static assets, like images, can be placed in the `public/` directory.
+```powershell
+npm run dev
+```
 
-## 🧞 Commands
+访问 `http://localhost:4321`。保存文件后页面会自动刷新。
 
-All commands are run from the root of the project, from a terminal:
+## 验证
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+```powershell
+npm test
+npm run build
+```
 
-## 👀 Want to learn more?
+## 发布到 GitHub Pages
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+1. 在 GitHub 创建仓库；推荐使用 `<你的用户名>.github.io` 作为仓库名。
+2. 将本地仓库推送到 `main` 分支。
+3. 打开仓库的 `Settings → Pages`，将 Source 设为 `GitHub Actions`。
+4. 此后每次推送都会由 `.github/workflows/deploy.yml` 自动部署。
+
+配置会根据 GitHub Actions 的 `GITHUB_REPOSITORY` 自动判断根路径或仓库子路径，无需手工填写用户名。
